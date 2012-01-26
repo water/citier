@@ -11,9 +11,6 @@ module Citier
     end
 
     module InstanceMethods
-      def do_summat
-        puts "SOMETHING"
-      end
     end
   end
 end
