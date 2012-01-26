@@ -9,4 +9,5 @@ group :development do
   gem "jeweler", "~> 1.8.3"
   gem "simplecov", ">= 0"
   gem "rspec", ">= 0"
+  gem 'sqlite3'
 end
