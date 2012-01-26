@@ -1,3 +1,5 @@
+require 'active_record'
+
 module ActiveRecord
   class ActiveRecord::Base 
   
