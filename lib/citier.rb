@@ -8,9 +8,9 @@ def citier_debug(s)
   end
 end
 
-require 'citier/citier_required_methods'
-require 'citier/citier_class_methods'
-require 'citier/citier_instance_methods'
+require 'citier/required_methods'
+require 'citier/class_methods'
+require 'citier/instance_methods'
 
 ActiveRecord::Base.send :extend, Citier::RequiredMethods
 

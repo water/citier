@@ -1,5 +1,5 @@
-require 'citier/citier_root_instance_methods.rb'
-require 'citier/citier_child_instance_methods'
+require 'citier/root_instance_methods.rb'
+require 'citier/child_instance_methods'
 
 module Citier
   module RequiredMethods
