@@ -40,8 +40,8 @@ module Citier
       
       # Strips 'view_' from the table name if it exists
       def get_writable_table(table_name)
-        if table_name[0..5] == "view_"
-          table_name = table_name[5..table_name.length]
+        if table_name[0..4] == "view_"
+          return table_name[5..table_name.length]
         end
         return table_name
       end

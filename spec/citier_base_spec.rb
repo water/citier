@@ -75,3 +75,18 @@ describe "identifying citier vs non citier classes" do
     NonCitierClass.acts_as_citier?.should eq(false)
   end
 end
+
+describe "retrieving the writable version of a table" do
+  it "should strip 'view_' from the start of a table name" do
+    CitierClass.get_writable_table("view_some_table").should eq("some_table")
+    CitierClass.get_writable_table("view_anothertable").should eq("anothertable")
+  end
+
+  it "should not alter a table name without a 'view_' prefix" do
+    CitierClass.get_writable_table("a_table").should eq("a_table")
+    CitierClass.get_writable_table("vieww_something").should eq("vieww_something")
+    CitierClass.get_writable_table("vie_something").should eq("vie_something")
+    CitierClass.get_writable_table("aview_something").should eq("aview_something")
+    CitierClass.get_writable_table("a_view_something").should eq("a_view_something")
+  end
+end
