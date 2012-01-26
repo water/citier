@@ -1,14 +1,14 @@
 require 'rubygems'
 require 'rake'
-require 'echoe'
 
-Echoe.new('citier', '0.1.14') do |p|
-  p.description    = "CITIER (Class Inheritance & Table Inheritance Embeddings for Rails) is a solution for single and multiple class table inheritance.
-    For full information: http://peterhamilton.github.com/citier/
-    For the original version by ALTRABio see www.github.com/altrabio/"
-  p.url            = "https://github.com/peterhamilton/citier/"
-  p.author         = "Peter Hamilton, Original Authors - Laurent Buffat, Pierre-Emmanuel Jouve & "
-  p.email          = "peter@inspiredpixel.net"
-  p.ignore_pattern = ["tmp/*", "script/*", 'doc/*']
-  p.development_dependencies = []
+Gem::Specification.new do |s|
+  s.name            = 'citier'
+  s.version         = '0.1.15'
+  s.date            = '2012-01-26'
+  s.summary         = "CITIER (Class Inheritance & Table Inheritance Embeddings for Rails)"
+  s.description     = "A solution for single and multiple class table inheritance."
+  s.homepage        = "https://github.com/peterhamilton/citier/"
+  s.authors         = ["Peter Hamilton"]
+  s.email           = "peter@inspiredpixel.net"
+  s.ignore_pattern  = ["tmp/*", "script/*", 'doc/*']
 end
