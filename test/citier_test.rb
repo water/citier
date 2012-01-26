@@ -1,4 +1,4 @@
-require 'helper'
+require File.dirname(__FILE__) + '/test_helper'
 
 class TestCitier < Test::Unit::TestCase
   should "probably rename this file and start testing for real" do
