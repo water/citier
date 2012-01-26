@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
 
-describe "Extending Active Record" do
+describe "Extending active record methods" do
   
   before :all do
     ActiveRecord::Schema.define do
