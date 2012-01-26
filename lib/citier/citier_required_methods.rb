@@ -1,8 +1,8 @@
 module Citier
-  module ClassMethods
-    # any method placed here will apply to classes
+  module RequiredMethods
+
     def acts_as_citier(options = {})
-      set_acts_as_citier(true)
+      self.new.class.send :extend, Citier::ClassMethods
 
       # Option for setting the inheritance columns, default value = 'type'
       db_type_field = (options[:db_type_field] || :type).to_s
@@ -12,7 +12,7 @@ module Citier
 
       self.inheritance_column = "#{db_type_field}"
 
-      if(self.superclass!=ActiveRecord::Base)
+      if(self.superclass != ActiveRecord::Base)
         # Non root-class
 
         citier_debug("Non Root Class")
@@ -26,7 +26,7 @@ module Citier
         # The the Writable. References the write-able table for the class because
         # save operations etc can't take place on the views
         self.const_set("Writable", create_class_writable(self))
-        
+
         after_initialize do
           self.id = nil if self.new_record? && self.id == 0
         end
@@ -34,7 +34,7 @@ module Citier
         # Add the functions required for children only
         send :include, Citier::ChildInstanceMethods
       else
-      # Root class
+        # Root class
 
         citier_debug("Root Class")
 
@@ -45,6 +45,10 @@ module Citier
         # Add the functions required for root classes only
         send :include, Citier::RootInstanceMethods
       end
+    end
+
+    def acts_as_citier?
+      false
     end
   end
 end
