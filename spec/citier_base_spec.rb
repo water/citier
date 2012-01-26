@@ -27,6 +27,15 @@ describe "Implementing 'Acts as Citier'" do
         active_record_methods.include?(m).should eq(true)
       end
     end
+    
+    it "sucessfully adds class methods to classes which act as citier" do
+      citier_methods = Citier::Base::ClassMethods.instance_methods
+      active_record_methods = CitierClass.methods
+      
+      citier_methods.each do |m|
+        active_record_methods.include?(m).should eq(true)
+      end
+    end
 
     it "sucessfully adds all citier instance methods to active record instances" do
       citier_methods = Citier::Base::InstanceMethods.instance_methods
@@ -34,6 +43,25 @@ describe "Implementing 'Acts as Citier'" do
 
       citier_methods.each do |m|
         citierclass_methods.include?(m).should eq(true)
+      end
+    end
+    
+    it "doesn't add citier class methods to non-citier classes" do
+      citier_methods = Citier::Base::ClassMethods.instance_methods
+      citierclass_methods = NonCitierClass.methods
+      citierclass_methods.delete(:acts_as_citier?) # Should be in both
+      
+      citier_methods.each do |m|
+        citierclass_methods.include?(m).should eq(false)
+      end
+    end
+    
+    it "doesn't add citier instance methods to non-citier instances" do
+      citier_methods = Citier::Base::InstanceMethods.instance_methods
+      citierclass_methods = NonCitierClass.new.methods
+
+      citier_methods.each do |m|
+        citierclass_methods.include?(m).should eq(false)
       end
     end
   end
