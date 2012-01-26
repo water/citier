@@ -1,6 +1,6 @@
 require 'rails'
-require 'rubygems'
 
+require 'rubygems'
 require 'bundler'
 
 begin
@@ -11,10 +11,10 @@ rescue Bundler::BundlerError => e
   exit e.status_code
 end
 
+require 'simplecov'
+SimpleCov.start 'rails'
 
 require 'shoulda'
-require 'simplecov'
-SimpleCov.start
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
@@ -26,5 +26,5 @@ require 'citier'
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 
 RSpec.configure do |config|
-  
+  config.mock_with :rspec
 end
