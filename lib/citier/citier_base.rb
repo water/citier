@@ -1,16 +1,16 @@
 module Citier
   module Base
-    
+
     def self.included(base)
       base.send :extend, RequiredMethods
     end
-    
+
     module RequiredMethods
-          
+
       def acts_as_citier(options = {})
         self.new.class.send :extend, ClassMethods
       end
-      
+
       def acts_as_citier?
         false
       end
@@ -20,7 +20,7 @@ module Citier
       def self.extended(base)
         base.send :include, InstanceMethods
       end
-      
+
       def acts_as_citier?
         true
       end
@@ -29,21 +29,21 @@ module Citier
         arel_table[column_name]
       end
 
-      def create_class_writable(class_reference)  #creation of a new class which inherits from ActiveRecord::Base
+      def create_class_writable(class_reference)
         Class.new(ActiveRecord::Base) do
-          include Citier::InstanceMethods::ForcedWriters
-
-          t_name = class_reference.table_name
-          t_name = t_name[5..t_name.length]
-
-          if t_name[0..5] == "view_"
-            t_name = t_name[5..t_name.length]
-          end
-
-          # set the name of the table associated to this class
-          # this class will be associated to the writable table of the class_reference class
-          self.table_name = t_name
+          include Citier::ForcedWriters
+          
+          # set the name of the writable table associated with the class_reference class
+          self.table_name = get_writable_table(class_reference.table_name)
         end
+      end
+      
+      # Strips 'view_' from the table name if it exists
+      def get_writable_table(table_name)
+        if table_name[0..5] == "view_"
+          table_name = table_name[5..table_name.length]
+        end
+        return table_name
       end
     end
 
