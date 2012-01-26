@@ -14,16 +14,15 @@ class CitierClass < ActiveRecord::Base
 end
 
 class NonCitierClass < ActiveRecord::Base
-  acts_as_citier
 end
 
 describe "Implementing 'Acts as Citier'" do
-  describe "when adding methods to ActiveRecord::Base" do
+  describe "when adding methods to ActiveRecord::Base with acts_as_citier" do
 
-    it "sucessfully adds all citier methods to active record" do
-      citier_methods = Citier::Base::ClassMethods.instance_methods
+    it "sucessfully adds acts_as methods to active record" do
+      citier_methods = Citier::Base::RequiredMethods.instance_methods
       active_record_methods = ActiveRecord::Base.methods
-
+      
       citier_methods.each do |m|
         active_record_methods.include?(m).should eq(true)
       end
@@ -36,6 +35,17 @@ describe "Implementing 'Acts as Citier'" do
       citier_methods.each do |m|
         citierclass_methods.include?(m).should eq(true)
       end
+    end
+  end
+
+  describe "sets the class properties correctly" do
+
+    it "@acts_as_citier = true for citier classes" do
+      CitierClass.acts_as_citier?.should eq(true)
+    end
+    
+    it "@acts_as_citier = false for non-citier classes" do
+      NonCitierClass.acts_as_citier?.should eq(false)
     end
   end
 

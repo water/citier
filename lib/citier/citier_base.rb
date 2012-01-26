@@ -1,19 +1,28 @@
 module Citier
   module Base
-    @acts_as_citier = false
-
+    
     def self.included(base)
-      base.send :extend, ClassMethods
+      base.send :extend, RequiredMethods
+    end
+    
+    module RequiredMethods
+          
+      def acts_as_citier(options = {})
+        self.new.class.send :extend, ClassMethods
+      end
+      
+      def acts_as_citier?
+        false
+      end
     end
 
     module ClassMethods
-      def acts_as_citier(options = {})
-        send :include, InstanceMethods
-        @acts_as_citier = true
+      def self.extended(base)
+        base.send :include, InstanceMethods
       end
-
+      
       def acts_as_citier?
-        @acts_as_citier || false
+        true
       end
 
       def [](column_name) 
