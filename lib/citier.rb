@@ -8,6 +8,8 @@ def citier_debug(s)
   end
 end
 
+require 'citier/citier_base'
+
 # require 'citier/core_ext'
 # 
 # # Methods which will be used by the class
@@ -26,7 +28,7 @@ end
 # require 'citier/sql_adapters'
 # 
 #Require acts_as_citier hook
-require 'citier/acts_as_citier'
+# require 'citier/acts_as_citier'
 # 
 # # Methods that override ActiveRecord::Relation
 # require 'citier/relation_methods'
