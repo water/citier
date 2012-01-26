@@ -14,6 +14,7 @@ describe "Extending Active Record" do
       acts_as_citier
     end
   end
+  
   it "sucessfully adds all citier class methods to active record" do
     citier_methods = Citier::ClassMethods.instance_methods
     active_record_methods = ActiveRecord::Base.methods
