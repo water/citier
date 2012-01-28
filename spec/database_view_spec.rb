@@ -78,10 +78,7 @@ describe "Adding act_as_citier" do
   
     class NonCitierClass < ActiveRecord::Base
     end
-  
-    puts CitierClass.column_names.inspect
-    puts CitierSubClass.column_names.inspect
-    puts CitierSubSubClass.column_names.inspect
+    
     CitierSubClass.column_names.should include("citier_parent_id")
   end
 end
