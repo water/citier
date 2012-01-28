@@ -152,9 +152,5 @@ describe "Adding act_as_citier" do
     CitierSubSubClass.create({root_value: "Root_6", child_value: "Child_4", subchild_value: "SubChild_1"})
     CitierSubSubClass.create({root_value: "Root_7", child_value: "Child_5", subchild_value: "SubChild_2"})
     CitierSubSubClass.create({root_value: "Root_8", child_value: "Child_6", subchild_value: "SubChild_3"})
-    
-    puts CitierClass.all.inspect
-    puts CitierSubClass.all.inspect
-    puts CitierSubSubClass.all.inspect
   end
 end
