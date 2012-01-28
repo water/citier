@@ -16,48 +16,54 @@ require 'rails_sql_views'
 # * Obtain the table for the parent class
 # * Generate a view named after the default table name for the class which 
 #   pulls in columns from its own writable table and the readable table for
-#   it's parent based on the columns retrieved earlier. 
+#   it's parent based on the columns retrieved earlier.
+# * Clear the column cache so it gets regenerated on the next request
 #
 # create_view uses the rails_sql_views gem
 def create_citier_view(klass)
-  reset_class = klass
-  until !reset_class.acts_as_citier?
-    citier_debug("Resetting column information for class #{reset_class}")
-    reset_class::Writable.reset_column_information
-    reset_class = reset_class.superclass
-  end
-
   self_columns = klass::Writable.column_names.select{ |c| c != klass.citier_parent_field }
   parent_columns = klass.superclass.column_names.select{ |c| c != "id" }
   self_read_table = klass.table_name
   self_write_table = klass::Writable.table_name
   parent_read_table = klass.superclass.table_name
-  
+
+  citier_debug("Creating citier view")
+
   sql = ""
-  sql += "SELECT P.id AS citier_parent_id, " 
-  sql += "#{self_columns.map{|c| "C.#{c}"}.join(', ')}, " 
-  sql += "#{parent_columns.map{|c| "P.#{c}"}.join(', ')} " 
+  sql += "SELECT C.#{klass.citier_parent_field} AS citier_parent_id, " 
+  sql += "#{self_columns.map{|c| "C.#{c}"}.join(', ')}"
+  # sql += " "
+  sql += ", "
+  sql += "#{parent_columns.map{|c| "P.#{c}"}.join(', ')} "
   sql += "FROM #{parent_read_table} P, #{self_write_table} C " 
-  sql += "WHERE P.id = C.#{klass.citier_parent_field}"
-  
+  sql += "WHERE P.id = citier_parent_id"
+
   ActiveRecord::Schema.define do
     create_view "#{self_read_table}", sql do |v|
-      v.column "#{parent_read_table}_id".to_sym
       v.column :id
       (self_columns + parent_columns).each do |c|
         v.column c.to_sym
       end
     end
   end
-  citier_debug("Creating citier view")
+  
+  reset_class = klass
+  until !reset_class.acts_as_citier?
+    citier_debug("Resetting column information for class #{reset_class}")
+    reset_class.reset_column_information
+    reset_class::Writable.reset_column_information
+    reset_class = reset_class.superclass
+  end
 end
 
 # Drops the generated view for the given class.
 # drop_view uses the rails_sql_views gem
 def drop_citier_view(klass) #function for dropping views for migrations 
   self_read_table = klass.table_name
-  drop_view self_read_table.to_sym
-  citier_debug("Dropping citier view -> #{sql}")
+  ActiveRecord::Schema.define do
+    drop_view self_read_table.to_sym
+  end
+  citier_debug("Dropping citier view)")
 end
 
 # Regenerates the view for the given class.
@@ -93,8 +99,6 @@ end
 def create_class_writable(class_reference)
   Class.new(ActiveRecord::Base) do
     include Citier::ForcedWriters
-
-    # set the name of the writable table associated with the class_reference class
     self.table_name = get_writable_table(class_reference.table_name)
   end
 end
