@@ -9,17 +9,18 @@ module Citier
 
       #:table_name = option for setting the name of the current class table_name, default value = 'tableized(current class name)'
       table_name = (options[:table_name] || self.name.tableize.gsub(/\//,'_')).to_s
-
       if !is_root?
         citier_debug("Non Root Class")
         citier_debug("table_name -> #{table_name}")
 
         # Set up the table which contains ALL attributes we want for this class
         self.table_name = "view_#{table_name}"
-        citier_debug("tablename (view) -> #{self.table_name}")
         
-        if !self.class.column_names.include?("parent_id")
-          add_column self.table_name.to_sym, :parent_id, :integer
+        @@parent_field = options[:parent_field] || :parent_id
+        
+        if !self.column_names.include?(@@parent_field)
+          # add_column self.table_name.to_sym, @@parent_field, :integer
+          raise "#{@@parent_field} is not available for #{self.name}"#TODO: Handle me properly
         end
         
         # Create a writable version of this class
