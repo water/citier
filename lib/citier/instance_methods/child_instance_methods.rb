@@ -61,6 +61,9 @@ module Citier
             current.force_changed_attributes(changed_attributes_for_current)
             
             current.id = self.id
+            if new_record?
+              current.parent_id = parent.id
+            end
             current.is_new_record(new_record?)
             
             if !current.save
