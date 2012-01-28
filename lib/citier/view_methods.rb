@@ -27,7 +27,7 @@ def create_citier_view(klass)
   self_write_table = klass::Writable.table_name
   parent_read_table = klass.superclass.table_name
 
-  citier_debug("Creating citier view")
+  citier_debug("Creating citier view for #{klass.name}")
 
   sql = ""
   sql += "SELECT C.#{klass.citier_parent_field} AS citier_parent_id, " 
@@ -49,7 +49,7 @@ def create_citier_view(klass)
   
   reset_class = klass
   until !reset_class.acts_as_citier?
-    citier_debug("Resetting column information for class #{reset_class}")
+    citier_debug("Resetting column information for #{reset_class}")
     reset_class.reset_column_information
     reset_class::Writable.reset_column_information
     reset_class = reset_class.superclass
