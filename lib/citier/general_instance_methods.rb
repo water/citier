@@ -26,7 +26,7 @@ module Citier
     def create_citier_view(klass)
       reset_class = klass::Writable 
       until reset_class == ActiveRecord::Base
-        citier_debug("Resetting column information on #{reset_class}")
+        citier_debug("Resetting column information for class #{reset_class}")
         reset_class.reset_column_information
         reset_class = reset_class.superclass
       end
