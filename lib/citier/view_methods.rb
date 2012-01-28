@@ -28,9 +28,6 @@ def create_citier_view(klass)
     parent_columns = klass.superclass.column_names.select{ |c| c != "id" }
   end
   
-  puts "#{klass}, #{self_columns.inspect}"
-  puts "#{klass.superclass}, #{parent_columns.inspect}"
-  
   self_read_table = klass.table_name
   self_write_table = klass::Writable.table_name
   parent_read_table = klass.superclass.table_name
@@ -40,7 +37,6 @@ def create_citier_view(klass)
   sql = ""
   sql += "SELECT C.#{klass.citier_parent_field} AS citier_parent_id, " 
   sql += "#{self_columns.map{|c| "C.#{c}"}.join(', ')}"
-  # sql += " "
   sql += ", "
   sql += "#{parent_columns.map{|c| "P.#{c}"}.join(', ')} "
   sql += "FROM #{parent_read_table} P, #{self_write_table} C " 
