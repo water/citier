@@ -35,6 +35,8 @@ module Citier
       end
     end
     
+    # Returns true if the current class doesn't inherit from another class.
+    # This is the case if it inherits from ActiveRecord::Base
     def is_root?
       self.superclass == ActiveRecord::Base
     end
