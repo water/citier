@@ -19,7 +19,7 @@ end
 describe "Adding methods to ActiveRecord::Base with acts_as_citier" do
 
   it "sucessfully adds acts_as methods to active record" do
-    citier_methods = Citier::Base::RequiredMethods.instance_methods
+    citier_methods = Citier::RequiredMethods.instance_methods
     active_record_methods = ActiveRecord::Base.methods
 
     citier_methods.each do |m|
@@ -28,7 +28,7 @@ describe "Adding methods to ActiveRecord::Base with acts_as_citier" do
   end
 
   it "sucessfully adds class methods to classes which act as citier" do
-    citier_methods = Citier::Base::ClassMethods.instance_methods
+    citier_methods = Citier::ClassMethods.instance_methods
     active_record_methods = CitierClass.methods
 
     citier_methods.each do |m|
@@ -37,7 +37,7 @@ describe "Adding methods to ActiveRecord::Base with acts_as_citier" do
   end
 
   it "sucessfully adds all citier instance methods to active record instances" do
-    citier_methods = Citier::Base::InstanceMethods.instance_methods
+    citier_methods = Citier::InstanceMethods.instance_methods
     citierclass_methods = CitierClass.new.methods
 
     citier_methods.each do |m|
@@ -46,7 +46,7 @@ describe "Adding methods to ActiveRecord::Base with acts_as_citier" do
   end
 
   it "doesn't add citier class methods to non-citier classes" do
-    citier_methods = Citier::Base::ClassMethods.instance_methods
+    citier_methods = Citier::ClassMethods.instance_methods
     citierclass_methods = NonCitierClass.methods
     citierclass_methods.delete(:acts_as_citier?) # Should be in both
 
@@ -56,7 +56,7 @@ describe "Adding methods to ActiveRecord::Base with acts_as_citier" do
   end
 
   it "doesn't add citier instance methods to non-citier instances" do
-    citier_methods = Citier::Base::InstanceMethods.instance_methods
+    citier_methods = Citier::InstanceMethods.instance_methods
     citierclass_methods = NonCitierClass.new.methods
 
     citier_methods.each do |m|

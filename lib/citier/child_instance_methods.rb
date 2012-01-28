@@ -96,7 +96,5 @@ module Citier
       raise ActiveRecord::RecordInvalid.new(self) if (options[:validate] != false && !self.valid?)
       self.save || raise(ActiveRecord::RecordNotSaved)
     end
-
-    include InstanceMethods
   end
 end
