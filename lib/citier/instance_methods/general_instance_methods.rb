@@ -38,7 +38,8 @@ module Citier
       self_write_table = klass::Writable.table_name
       parent_read_table = klass.superclass.table_name
       
-      create_view self_read_table, "SELECT #{parent_read_table}.id, #{columns.join(',')} FROM #{parent_read_table}, #{self_write_table} WHERE #{parent_read_table}.id = #{self_write_table}.id" do |v|
+      create_view self_read_table, "SELECT #{parent_read_table}.id AS parent_id , #{columns.join(',')} FROM #{parent_read_table}, #{self_write_table} WHERE #{parent_read_table}.id = #{self_write_table}.parent_id" do |v|
+        v.column "#{parent_read_table}_id".to_sym
         v.column :id
         columns.each do |c|
           v.column c.to_sym
