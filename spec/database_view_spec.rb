@@ -80,5 +80,6 @@ describe "Adding act_as_citier" do
     end
     
     CitierSubClass.column_names.should include("citier_parent_id")
+    CitierSubSubClass.column_names.should include("citier_parent_id")
   end
 end
