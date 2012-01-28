@@ -1,6 +1,7 @@
 source "http://rubygems.org"
 
 gem "rails"
+gem "rails_sql_views"
 
 group :development do
   gem "shoulda", ">= 0"
