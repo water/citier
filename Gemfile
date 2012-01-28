@@ -11,4 +11,5 @@ group :development do
   gem "simplecov", ">= 0"
   gem "rspec", ">= 0"
   gem 'sqlite3'
+  gem 'database_cleaner'
 end
