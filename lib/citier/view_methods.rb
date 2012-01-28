@@ -22,7 +22,15 @@ require 'rails_sql_views'
 # create_view uses the rails_sql_views gem
 def create_citier_view(klass)
   self_columns = klass::Writable.column_names.select{ |c| c != klass.citier_parent_field }
-  parent_columns = klass.superclass.column_names.select{ |c| c != "id" }
+  if klass.superclass.acts_as_citier?
+    parent_columns = klass.superclass.column_names.select{ |c| c != "id" && c != "citier_parent_id" }
+  else
+    parent_columns = klass.superclass.column_names.select{ |c| c != "id" }
+  end
+  
+  puts "#{klass}, #{self_columns.inspect}"
+  puts "#{klass.superclass}, #{parent_columns.inspect}"
+  
   self_read_table = klass.table_name
   self_write_table = klass::Writable.table_name
   parent_read_table = klass.superclass.table_name
@@ -46,7 +54,7 @@ def create_citier_view(klass)
       end
     end
   end
-  
+
   reset_class = klass
   until !reset_class.acts_as_citier?
     citier_debug("Resetting column information for #{reset_class}")
