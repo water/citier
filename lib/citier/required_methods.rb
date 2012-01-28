@@ -16,10 +16,8 @@ module Citier
         # Set up the table which contains ALL attributes we want for this class
         self.table_name = "view_#{table_name}"
         
-        @@parent_field = options[:parent_field] || :parent_id
-        
+        @@parent_field = options[:parent_field] || "parent_id"
         if !self.column_names.include?(@@parent_field)
-          # add_column self.table_name.to_sym, @@parent_field, :integer
           raise "#{@@parent_field} is not available for #{self.name}"#TODO: Handle me properly
         end
         

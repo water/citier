@@ -1,3 +1,4 @@
+require 'citier/forced_writers'
 module Citier
   module ClassMethods
       def self.extended(base)
@@ -17,7 +18,7 @@ module Citier
           include Citier::ForcedWriters
 
           # set the name of the writable table associated with the class_reference class
-          self.table_name = get_writable_table(class_reference.table_name)
+          class_reference.table_name = class_reference.get_writable_table(class_reference.table_name)
         end
       end
 
