@@ -1,7 +1,7 @@
 require 'rails'
-
 require 'rubygems'
 require 'bundler'
+require 'database_cleaner'
 
 begin
   Bundler.setup(:default, :development)
@@ -28,19 +28,14 @@ Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 RSpec.configure do |config|
   config.mock_with :rspec
   
-  config.use_transactional_fixtures = false
-  
-  config.before(:suite) do
-    DatabaseCleaner.strategy = :truncation
-  end
-
-  config.before(:each) do
-    DatabaseCleaner.start
-  end
-
-  config.after(:each) do
-    DatabaseCleaner.clean
-  end
+  # config.before(:suite) do
+  #   DatabaseCleaner.strategy = :truncation
+  #   DatabaseCleaner.start
+  # end
+  # 
+  # config.after(:suite) do
+  #   DatabaseCleaner.clean
+  # end
 end
 
 def teardown
