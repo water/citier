@@ -6,6 +6,12 @@ module Citier
       @new_record = b
     end
     
+    # Returns true if the current class doesn't inherit from another class.
+    # This is the case if it inherits from ActiveRecord::Base
+    def is_root?
+      self.class.superclass == ActiveRecord::Base
+    end
+    
     # Creates a view by pulling in the relevant fields for the current class
     # from all it's parent classes.
     # Keeping a seperate view means we read all attributes from one table which
