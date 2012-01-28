@@ -10,7 +10,7 @@ end
 
 require 'citier/required_methods'
 require 'citier/class_methods'
-require 'citier/general_instance_methods'
+require 'citier/instance_methods/general_instance_methods'
 
 ActiveRecord::Base.send :extend, Citier::RequiredMethods
 
