@@ -17,7 +17,11 @@ module Citier
         # Set up the table which contains ALL attributes we want for this class
         self.table_name = "view_#{table_name}"
         citier_debug("tablename (view) -> #{self.table_name}")
-
+        
+        if !self.class.column_names.include?("parent_id")
+          add_column self.table_name.to_sym, :parent_id, :integer
+        end
+        
         # Create a writable version of this class
         self.const_set("Writable", create_class_writable(self))
 
