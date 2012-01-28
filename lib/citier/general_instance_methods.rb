@@ -56,19 +56,27 @@ module Citier
       citier_debug("Dropping citier view -> #{sql}")
     end
 
+    # Regenerates the view for the given class.
+    # Basically just drops the citier view for the class and then re-creates it
+    # Shoudl throw an error if the klass doesn't have a table.
+    # See #create_or_update_citier_view for a method which doesn't throw an error
+    # but instead just creates the table if none already exists
     def update_citier_view(klass) #function for updating views for migrations
       citier_debug("Updating citier view for #{klass}")
       if klass.table_exists?
         drop_citier_view(klass)
         create_citier_view(klass)
       else
+        # TODO: Raise an error here!
         citier_debug("Error: #{klass} VIEW doesn't exist.")
       end
     end
-
-    def create_or_update_citier_view(klass) #Convienience function for updating or creating views for migrations
+    
+    # Checks to see if a table exists for the given class. If not, create one, else
+    # update the citier view for the class. Ensures a table will exist regardless
+    # of whether it already exists
+    def create_or_update_citier_view(klass)
       citier_debug("Create or Update citier view for #{klass}")
-
       if klass.table_exists?
         update_citier_view(klass)
       else
