@@ -32,14 +32,14 @@ def create_citier_view(klass)
   parent_read_table = klass.superclass.table_name
 
   citier_debug("Creating citier view for #{klass.name}")
-
+  
   sql = ""
   sql += "SELECT C.#{klass.citier_parent_field} AS citier_parent_id, " 
   sql += "#{self_columns.map{|c| "C.#{c}"}.join(', ')}"
   sql += ", "
   sql += "#{parent_columns.map{|c| "P.#{c}"}.join(', ')} "
   sql += "FROM #{parent_read_table} P, #{self_write_table} C " 
-  sql += "WHERE P.id = citier_parent_id"
+  sql += "WHERE P.id = C.#{klass.citier_parent_field}"
 
   ActiveRecord::Schema.define do
     create_view "#{self_read_table}", sql do |v|
