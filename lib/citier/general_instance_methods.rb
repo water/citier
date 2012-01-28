@@ -22,6 +22,7 @@ module Citier
     #   pulls in columns from its own writable table and the readable table for
     #   it's parent based on the columns retrieved earlier. 
     #
+    # create_view uses the rails_sql_views gem
     def create_citier_view(klass)
       reset_class = klass::Writable 
       until reset_class == ActiveRecord::Base
@@ -37,7 +38,7 @@ module Citier
       self_write_table = klass::Writable.table_name
       parent_read_table = klass.superclass.table_name
       
-      create_view "#{self_read_table}", "SELECT #{parent_read_table}.id, #{columns.join(',')} FROM #{parent_read_table}, #{self_write_table} WHERE #{parent_read_table}.id = #{self_write_table}.id" do |v|
+      create_view self_read_table, "SELECT #{parent_read_table}.id, #{columns.join(',')} FROM #{parent_read_table}, #{self_write_table} WHERE #{parent_read_table}.id = #{self_write_table}.id" do |v|
         v.column :id
         columns.each do |c|
           v.column c.to_sym
@@ -46,15 +47,13 @@ module Citier
 
       citier_debug("Creating citier view -> #{sql}")
     end
-
+    
+    # Drops the generated view for the given class.
+    # drop_view uses the rails_sql_views gem
     def drop_citier_view(klass) #function for dropping views for migrations 
       self_read_table = klass.table_name
-      sql = "DROP VIEW #{self_read_table}"
-
-      drop_view(self_read_table.to_sym) #drop using our rails sql views gem
-
+      drop_view self_read_table.to_sym
       citier_debug("Dropping citier view -> #{sql}")
-      #klass.connection.execute sql
     end
 
     def update_citier_view(klass) #function for updating views for migrations
