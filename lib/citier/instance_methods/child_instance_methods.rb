@@ -28,7 +28,7 @@ module Citier
     def save(options={})
       return false if (options[:validate] != false && !self.valid?)
       
-      citier_debug("SAVING #{self.class.to_s}")
+      citier_debug("Saving #{self.class.to_s}")
       
       self.run_callbacks(:save) do
         self.run_callbacks(self.new_record? ? :create : :update) do
@@ -52,17 +52,21 @@ module Citier
             citier_debug("Parent Class (#{self.class.superclass.to_s}) could not be saved")
             citier_debug("Errors = #{parent.errors.to_s}")
             return false
+          else
+            if parent.class.is_root?
+              citier_debug("Saved #{parent.class.name} ")
+            end
           end
-
+          
           if attributes_for_current.any?
             current = self.class::Writable.new
             
             current.force_attributes(attributes_for_current, :merge => true)
             current.force_changed_attributes(changed_attributes_for_current)
-            
             current.id = self.id
             if new_record?
-              current.parent_id = parent.id
+              current[self.class.citier_parent_field.to_sym] = parent.id
+              self.citier_parent_id = parent.id
             end
             current.is_new_record(new_record?)
             
@@ -70,6 +74,9 @@ module Citier
               citier_debug("Class (#{self.class.superclass.to_s}) could not be saved")
               citier_debug("Errors = #{current.errors.to_s}")
               return false
+            else
+              self.id = current.id
+              citier_debug("Saved #{self.class.name} ")
             end
           end
           

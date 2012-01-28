@@ -31,7 +31,7 @@ module Citier
       else
         citier_debug("Root Class")
         citier_debug("table_name -> #{self.table_name}")
-
+        
         # Add the functions required for root classes only
         send :include, Citier::RootInstanceMethods
       end

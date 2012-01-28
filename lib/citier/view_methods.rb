@@ -1,12 +1,11 @@
 require 'citier/forced_writers'
+require 'rails_sql_views'
 
 # Creates a view by pulling in the relevant fields for the current class
 # from all it's parent classes.
 # Keeping a seperate view means we read all attributes from one table which
 # is much faster than pulling them all in seperately using model-logic
 # 
-require 'rails_sql_views'
-
 # The basic steps are as follows:
 # * Reset all cached column information for this and all parent classes
 # * Gather all non-id columns for the current class
@@ -52,7 +51,7 @@ def create_citier_view(klass)
   end
 
   reset_class = klass
-  until !reset_class.acts_as_citier?
+  until reset_class.is_root?
     citier_debug("Resetting column information for #{reset_class}")
     reset_class.reset_column_information
     reset_class::Writable.reset_column_information
@@ -103,6 +102,7 @@ end
 def create_class_writable(class_reference)
   Class.new(ActiveRecord::Base) do
     include Citier::ForcedWriters
+    include Citier::InstanceMethods
     self.table_name = get_writable_table(class_reference.table_name)
   end
 end
