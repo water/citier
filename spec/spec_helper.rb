@@ -29,4 +29,14 @@ RSpec.configure do |config|
   config.mock_with :rspec
 end
 
+def teardown
+  puts "teardown"
+  ActiveRecord::Base.connection.tables.each do |t|
+    drop_table t
+  end
+  ActiveRecord::Base.connection.tables.each do |t|
+    drop_table t
+  end
+end
+
 # Set up test classes
