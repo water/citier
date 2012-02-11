@@ -19,14 +19,13 @@ class ActiveRecord::Base
   def self.create_class_writable(class_reference)  #creation of a new class which inherits from ActiveRecord::Base
     Class.new(ActiveRecord::Base) do
       include Citier::InstanceMethods::ForcedWriters
-      
       t_name = class_reference.table_name
       t_name = t_name[5..t_name.length]
-
+      
       if t_name[0..5] == "view_"
         t_name = t_name[5..t_name.length]
       end
-
+      
       # set the name of the table associated to this class
       # this class will be associated to the writable table of the class_reference class
       self.table_name = t_name

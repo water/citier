@@ -19,7 +19,11 @@ module Citier
         citier_debug("table_name -> #{table_name}")
 
         # Set up the table which contains ALL attributes we want for this class
-        self.table_name = "view_#{table_name}"
+        if options[:ignore_view_prefix]
+          self.table_name = table_name
+        else
+          self.table_name = "view_#{table_name}"
+        end
 
         citier_debug("tablename (view) -> #{self.table_name}")
 
